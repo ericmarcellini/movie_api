@@ -1,5 +1,9 @@
-const express = require('express');
+const express = require('express'),
+  morgan = require('morgan');
+
 const app = express();
+
+app.use(morgan('common'));
 
 let top10Movies = [
   {
@@ -46,16 +50,14 @@ let top10Movies = [
 
 // GET requests
 app.get('/', (req, res) => {
-  res.send('Welcome to my movie website! :)');
-});
-
-app.get('/documentation', (req, res) => {                  
-  res.sendFile('public/documentation.html', { root: __dirname });
+  res.send('Welcome to my app!');
 });
 
 app.get('/movies', (req, res) => {
   res.json(top10Movies);
 });
+
+app.use(express.static('public'));
 
 // listen for requests
 app.listen(8080, () => {
