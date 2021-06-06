@@ -5,7 +5,7 @@ const app = express();
 
 app.use(morgan('common'));
 
-let top10Movies = [
+let allMovies = [
   {
     title: 'Harry Potter and the Sorcerer\'s Stone',
     author: 'J.K. Rowling'
@@ -48,18 +48,62 @@ let top10Movies = [
   },
 ];
 
+//List of all users
+let allUsers = [
+  {
+    Name: 'John Smith',
+    age: '37'
+  }
 // GET requests
 app.use(express.static('public'));
 
+
+// Welcome screen
 app.get('/', (req, res) => {
   res.send('Welcome to my app!');
 });
 
+// List of all available movies
 app.get('/movies', (req, res) => {
-  res.json(top10Movies);
+  res.json(allMovies);
 });
 
+// List of all available users
+app.get('/users', (req, res) => {
+  res.json(allUsers);
+});
 
+// Gets the data about a single user, by name
+app.get('/users/:name', (req, res) => {
+  res.json(user.find((user) =>
+    { return user.name === req.params.name }));
+});
+
+// Gets the data about a movie, by name
+app.get('/movie/:name', (req, res) => {
+  res.json(movie.find((user) =>
+    { return movie.name === req.params.name }));
+});
+
+// Deletes a user from our list by ID
+app.delete('/users/:id', (req, res) => {
+  let user = user.find((user) => { return user.id === req.params.id });
+
+  if (user) {
+    users = users.filter((obj) => { return obj.id !== req.params.id });
+    res.status(201).send('User ' + req.params.id + ' was deleted.');
+  }
+});
+
+// Deletes a movie from our list by ID
+app.delete('/movies/:id', (req, res) => {
+  let movie = movie.find((user) => { return movie.id === req.params.id });
+
+  if (movie) {
+    movies = movies.filter((obj) => { return obj.id !== req.params.id });
+    res.status(201).send('The film ' + req.params.id + ' was deleted.');
+  }
+});
 
 // listen for requests
 app.listen(8080, () => {

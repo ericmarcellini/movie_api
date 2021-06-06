@@ -8,10 +8,23 @@
 </head>
 <body>
     <h1>Achievement 2 Project: myFlix</h1>
-    <p>To build the server-side component of a “movies” web application. The web
-        application will provide users with access to information about different
-        movies, directors, and genres. Users will be able to sign up, update their
-        personal information, and create a list of their favorite movies.
+        <p>To build the server-side component of a “movies” web application. The web
+            application will provide users with access to information about different
+            movies, directors, and genres. Users will be able to sign up, update their
+            personal information, and create a list of their favorite movies.
         </p>
+
+    <h1>URL End-points</h1>        
+        <p>User End-points
+            "/users" Returns a list of all of the users in the website, by using GET.
+            "/users/:name" Allows us to get the data from a single user by their username, using GET.
+            "/users/:id" Allows us to delete a user by their ID by using DELETE.
+        </p>
+        <p>
+            Movie End-points:
+            "/movies" Returns a list of all the available movies, by using GET.
+            "/movies/:name" Allows us to find a movie by their name, by using GET.
+            "/movies/:id" Lets us delete a movie by the assigned ID, by using DELETE.             
+        </p>    
 </body>
 </html>
