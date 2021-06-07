@@ -1,8 +1,10 @@
 const express = require('express'),
   morgan = require('morgan');
-
+  bodyParser = require('body-parser'),
+  uuid = require('uuid');
+  
 const app = express();
-
+app.use(bodyParser.json());
 app.use(morgan('common'));
 
 let allMovies = [
