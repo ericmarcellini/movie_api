@@ -7,7 +7,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(morgan('common'));
 
-let allMovies = [
+let movies = [
   {
     title: 'Harry Potter and the Sorcerer\'s Stone',
     author: 'J.K. Rowling'
@@ -51,60 +51,65 @@ let allMovies = [
 ];
 
 //List of all users
-let allUsers = [
+let users = [
   {
-    Name: 'John Smith',
+    id: 1,
+    name: 'John Smith',
     age: '37'
-  }
+  },
+  {
+    id: 2,
+    name: 'Mark Smith',
+    age: '25'
+  },
+  {
+    id: 3,
+    name: 'John Dpe',
+    age: '64'
+  },
+  {
+    id: 4,
+    name: 'user123',
+    age: '69'
+  },
+]
 // GET requests
 app.use(express.static('public'));
 
 
 // Welcome screen
 app.get('/', (req, res) => {
-  res.send('Welcome to my app!');
+  res.send('Welcome to my movie app!');
 });
 
 // List of all available movies
 app.get('/movies', (req, res) => {
-  res.json(allMovies);
+  res.json(movies);
 });
 
 // List of all available users
 app.get('/users', (req, res) => {
-  res.json(allUsers);
+  res.json(users);
 });
 
 // Gets the data about a single user, by name
 app.get('/users/:name', (req, res) => {
-  res.json(user.find((user) =>
+  res.json(users.find((user) =>
     { return user.name === req.params.name }));
 });
 
 // Gets the data about a movie, by name
-app.get('/movie/:name', (req, res) => {
-  res.json(movie.find((user) =>
-    { return movie.name === req.params.name }));
+app.get('/movies/:title', (req, res) => {
+  res.json(movies.find((movie) =>
+    { return movie.title === req.params.title }));
 });
 
-// Deletes a user from our list by ID
-app.delete('/users/:id', (req, res) => {
-  let user = user.find((user) => { return user.id === req.params.id });
-
-  if (user) {
-    users = users.filter((obj) => { return obj.id !== req.params.id });
-    res.status(201).send('User ' + req.params.id + ' was deleted.');
-  }
+app.get('/directors', (req, res) => {
+  res.send('List currently unavailable. This function is coming up soon!');
 });
 
-// Deletes a movie from our list by ID
-app.delete('/movies/:id', (req, res) => {
-  let movie = movie.find((user) => { return movie.id === req.params.id });
-
-  if (movie) {
-    movies = movies.filter((obj) => { return obj.id !== req.params.id });
-    res.status(201).send('The film ' + req.params.id + ' was deleted.');
-  }
+app.get('/directors/:name', (req, res) => {
+  res.send('Director not found, database not fully opperational');
 });
 
 // listen for requests
