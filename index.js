@@ -98,18 +98,55 @@ app.get('/users/:name', (req, res) => {
     { return user.name === req.params.name }));
 });
 
+app.get('/updateusers/', (req, res) => {
+  res.send('(PUT REQUEST) Updates users username.');
+});
+
+app.get('/deleteusers', (req, res) => {
+  res.send('(DELETE REQUEST) Deletes a user from the system.');
+});
+
 // Gets the data about a movie, by name
 app.get('/movies/:title', (req, res) => {
   res.json(movies.find((movie) =>
     { return movie.title === req.params.title }));
 });
 
+// PUT Request, adds movie to users list
+app.get('/addmovies', (req, res) => {
+  res.send('(PUT REQUEST) Movie has been successfully added to your list');
+});
+
+// DELETE Request, deletes movie from users list
+app.get('/removemovies', (req, res) => {
+  res.send('(DELETE REQUEST) Movie has been removed from your list');
+});
+
+// Gets director data
 app.get('/directors', (req, res) => {
   res.send('List currently unavailable. This function is coming up soon!');
 });
 
 app.get('/directors/:name', (req, res) => {
   res.send('Director not found, database not fully opperational');
+});
+
+//Gets genre data
+app.get('/genres', (req,res) => {
+  res.send('Genres list currently unavailable, this function will be supported soon!');
+});
+
+app.get('/genres/:name', (req,res) => {
+  res.send('Finding a genre by name is currently not opperational!');
+});
+
+// post sign-up & get log-in
+app.get('/sign-up', (req,res) => {
+  res.send('MyFlixApp is still not open to the public! Try signing in later! (POST REQUEST)');
+});
+
+app.get('/log-in',(req,res) => {
+  res.send('Account system not implemented yet, try making an account later!');
 });
 
 // listen for requests
