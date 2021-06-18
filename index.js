@@ -1,3 +1,13 @@
+/*
+const mongoose = require('mongoose');
+const Models = require('./models.js');
+
+const Movies = Models.Movie;
+const Users = Models.User;
+
+mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
+*/
+
 const express = require('express'),
   morgan = require('morgan');
   bodyParser = require('body-parser'),
@@ -82,11 +92,6 @@ app.get('/', (req, res) => {
   res.send('Welcome to my movie app!');
 });
 
-// List of all available movies
-app.get('/movies', (req, res) => {
-  res.json(movies);
-});
-
 // List of all available users
 app.get('/users', (req, res) => {
   res.json(users);
@@ -98,12 +103,18 @@ app.get('/users/:name', (req, res) => {
     { return user.name === req.params.name }));
 });
 
-app.get('/updateusers/', (req, res) => {
+app.put('/updateusers/', (req, res) => {
   res.send('(PUT REQUEST) Updates users username.');
 });
 
-app.get('/deleteusers', (req, res) => {
+app.delete('/deleteusers', (req, res) => {
   res.send('(DELETE REQUEST) Deletes a user from the system.');
+});
+
+
+// List of all available movies
+app.get('/movies', (req, res) => {
+  res.json(movies);
 });
 
 // Gets the data about a movie, by name
@@ -113,12 +124,12 @@ app.get('/movies/:title', (req, res) => {
 });
 
 // PUT Request, adds movie to users list
-app.get('/addmovies', (req, res) => {
+app.put('/addmovies', (req, res) => {
   res.send('(PUT REQUEST) Movie has been successfully added to your list');
 });
 
 // DELETE Request, deletes movie from users list
-app.get('/removemovies', (req, res) => {
+app.delete('/removemovies', (req, res) => {
   res.send('(DELETE REQUEST) Movie has been removed from your list');
 });
 
@@ -141,11 +152,11 @@ app.get('/genres/:name', (req,res) => {
 });
 
 // post sign-up & get log-in
-app.get('/sign-up', (req,res) => {
+app.post('/sign-up', (req,res) => {
   res.send('MyFlixApp is still not open to the public! Try signing in later! (POST REQUEST)');
 });
 
-app.get('/log-in',(req,res) => {
+app.post('/log-in',(req,res) => {
   res.send('Account system not implemented yet, try making an account later!');
 });
 
