@@ -28,6 +28,7 @@
                 <th class="tg-0lax">№</th>  
                 <th class="tg-0lax">End-points</th>
                 <th class="tg-0lax">HTTP Request Method</th>
+                <th class="tg-0lax">Request</th>
                 <th class="tg-0lax">Description</th>
               </tr>
             </thead>
@@ -36,84 +37,107 @@
                 <td class="tg-0lax">1</td>
                 <td class="tg-0lax">/users</td>
                 <td class="tg-0lax">GET</td>
-                <td class="tg-0lax">Returns a list of all of the users in the website, by using GET.</td>
+                <td class="tg-0lax"></td>
+                <td class="tg-0lax">Returns a list of all of the users in the website. It's returned in JSON and following this format: 
+                  <br>ID: Integer <br>
+                  Username: String<br>
+                  Password: String<br>
+                  Email: String<br>
+                  Birthday: Date<br></td>
               </tr>
               <tr>
                 <td class="tg-0lax">2</td>
                 <td class="tg-0lax">/users/[:name]</td>
                 <td class="tg-0lax">GET</td>
-                <td class="tg-0lax">Allows us to get the data from a single user by their username</td>
+                <td class="tg-0lax"></td>
+                <td class="tg-0lax">Returned in JSON Format. The data from a single user by their username</td>
               </tr>
               <tr>
                 <td class="tg-0lax">3</td>
-                <td class="tg-0lax">/updateusers</td>
+                <td class="tg-0lax">/users/[:name]</td>
                 <td class="tg-0lax">PUT</td>
-                <td class="tg-0lax">Updates a users username</td>
+                <td class="tg-0lax">                  ID: Integer
+                  Username: String
+                  Password: String
+                  Email: String
+                  Birthday: Date</td>
+                <td class="tg-0lax">Updates a users username/password/email/birthday, returns it as a JSON file</td>
               </tr>
               <tr>
                 <td class="tg-0lax">4</td>
-                <td class="tg-0lax">/deleteusers</td>
+                <td class="tg-0lax">/users/[:name]</td>
                 <td class="tg-0lax">DELETE</td>
+                <td class="tg-0lax"></td>
                 <td class="tg-0lax">Deletes a user from the server</td>
               </tr>
               <tr>
                 <td class="tg-0lax">5</td>
                 <td class="tg-0lax">/movies</td>
                 <td class="tg-0lax">GET</td>
-                <td class="tg-0lax">Returns a list of all the available movies</td>
+                <td class="tg-0lax"></td>
+                <td class="tg-0lax">Returns a JSON list of all the available movies</td>
               </tr>
               <tr>
                 <td class="tg-0lax">6</td>
                 <td class="tg-0lax">movies/[:title]</td>
                 <td class="tg-0lax">GET</td>
+                <td class="tg-0lax"></td>
                 <td class="tg-0lax">Allows us to find a movie by their title</td>
               </tr>
               <tr>
                 <td class="tg-0lax">7</td>
-                <td class="tg-0lax">/addmovies</td>
-                <td class="tg-0lax">PUT</td>
+                <td class="tg-0lax">/users/:Username/Movies/:MovieID</td>
+                <td class="tg-0lax">POST</td>
+                <td class="tg-0lax">Username & MoveID Required</td>
                 <td class="tg-0lax">Allows us to add a movie to a username</td>
               </tr>
               <tr>
                 <td class="tg-0lax">8</td>
-                <td class="tg-0lax">/removemovies</td>
+                <td class="tg-0lax">/users/:Username/Movies/:MovieID</td>
                 <td class="tg-0lax">DELETE</td>
+                <td class="tg-0lax">Username & MoveID Required</td>
                 <td class="tg-0lax">Allows us to remove a movie from a users account</td>
               </tr>
               <tr>
                 <td class="tg-0lax">9</td>
                 <td class="tg-0lax">/directors</td>
                 <td class="tg-0lax">GET</td>
-                <td class="tg-0lax">Returns a list of all the available directors in the database</td>
+                <td class="tg-0lax"></td>
+                <td class="tg-0lax">Returns a JSON list of all the available directors in the database</td>
               </tr>
               <tr>
                 <td class="tg-0lax">10</td>
                 <td class="tg-0lax">/director/[:name]</td>
                 <td class="tg-0lax">GET</td>
-                <td class="tg-0lax">Allows us to find a specific director by name.</td>
+                <td class="tg-0lax"></td>
+                <td class="tg-0lax">Returns a JSON file of the specific director by name.</td>
               </tr>
               <tr>
                 <td class="tg-0lax">11</td>
                 <td class="tg-0lax">/genres</td>
                 <td class="tg-0lax">GET</td>
-                <td class="tg-0lax">Returns a list of all the available genre</td>
+                <td class="tg-0lax"></td>
+                <td class="tg-0lax">Returns a JSON list of all the available genre</td>
               </tr>
               <tr>
                 <td class="tg-0lax">12</td>
                 <td class="tg-0lax">/genres/[:name]</td>
                 <td class="tg-0lax">GET</td>
-                <td class="tg-0lax">Allows us to find a genre by their name</td>
+                <td class="tg-0lax"></td>
+                <td class="tg-0lax">Returns a JSON file of the specific genre by their name</td>
               </tr>
               <tr>
                 <td class="tg-0lax">13</td>
-                <td class="tg-0lax">/sign-up</td>
+                <td class="tg-0lax">/users</td>
                 <td class="tg-0lax">POST</td>
+                <td class="tg-0lax"></td>
                 <td class="tg-0lax">Lets us make our account to access the service</td>
               </tr>
               <tr>
                 <td class="tg-0lax">14</td>
                 <td class="tg-0lax">/log-in</td>
                 <td class="tg-0lax">POST</td>
+                <td class="tg-0lax"></td>
                 <td class="tg-0lax">Lets us access the account we previously made to use the service</td>
               </tr>
             </tbody>

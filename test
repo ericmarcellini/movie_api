@@ -1,0 +1,48 @@
+
+var genre1 = {
+    "Name" : "Thriller",
+    "Description" : "Thriller film, also known as suspense film or suspense thriller, is a broad film genre that involves excitement and suspense in the audience."
+}
+db.genres.insertOne(genre1)
+
+var genre2 = {
+    "Name" : "Drama",
+    "Description" : "In film and television, drama is a category of narrative fiction (or semi-fiction) intended to be more serious than humorous in tone."
+}
+db.genres.insertOne(genre2)
+
+var genre3 = {
+    "Name" : "Science Fiction",
+    "Description" : "Science fiction (or sci-fi) is a film genre that uses speculative, fictional science-based depictions of phenomena that are not fully accepted by mainstream science, such as extraterrestrial lifeforms, alien worlds, extrasensory perception and time travel, along with futuristic elements such as spacecraft, robots, cyborgs, interstellar travel or other technologies. Science fiction films have often been used to focus on political or social issues, and to explore philosophical issues like the human condition."
+}
+db.genres.insertOne(genre3)
+
+var genre4 = {
+    "Name" : "Animation",
+    "Description" : "Animation is a method in which figures are manipulated to appear as moving images. In traditional animation, images are drawn or painted by hand on transparent celluloid sheets to be photographed and exhibited on film. Today, most animations are made with computer-generated imagery (CGI). Computer animation can be very detailed 3D animation, while 2D computer animation (which may have the look of traditional animation) can be used for stylistic reasons, low bandwidth, or faster real-time renderings. Other common animation methods apply a stop motion technique to two and three-dimensional objects like paper cutouts, puppets, or clay figures."
+}
+db.genres.insertOne(genre4)
+
+var director1 = {
+    "Name" : "Jonathan Demme",
+    "Bio" : "Robert Jonathan Demme was an American director, producer and screenwriter.",
+    "Birth" : "1944",
+    "Death" : "2017"
+}
+db.directors.insertOne(director1)
+
+var director2 = {
+    "Name" : "Steven Spielberg",
+    "Bio" : "Steven Allan Spielberg is an American film director, producer, and screenwriter. He began his career in the New Hollywood era, and is one of the most commercially successful directors in history. Spielberg is the recipient of various accolades, including two Academy Awards for Best Director, a Kennedy Center honor, and a Cecil B. DeMille Award.",
+    "Birth" : "1946",
+    "Death" : ""
+}
+db.directors.insertOne(director2)
+
+var director3 = {
+    "Name" : "Andrew Adamson",
+    "Bio" : "Andrew Ralph Adamson MNZM (born 1 December 1966) is a New Zealander film director, producer and screenwriter based mainly in Los Angeles, where he directed the Academy Award-winning animated films Shrek and Shrek 2. He was director, executive producer, and scriptwriter for the 2005 production of The Chronicles of Narnia: The Lion, the Witch and the Wardrobe. He also worked on the movies Batman Forever and Batman & Robin as a visual effects supervisor.",
+    "Birth" : "12/1/1966",
+    "Death" : ""
+}        
+db.directors.insertOne(director3)
