@@ -138,7 +138,7 @@ app.get('/movies/:Title', passport.authenticate('jwt', { session: false }), (req
 // POST Request, adds movie to users list
 app.post('/users/:Username/Movies/:MovieID', passport.authenticate('jwt', { session: false }), (req, res) => {
   Users.findOneAndUpdate({ Username: req.params.Username }, {
-     $push: { FavoriteMovies: req.params.MovieID }
+     $addToSet: { FavoriteMovies: req.params.MovieID }
    },
    { new: true }, 
   (err, updatedUser) => {
