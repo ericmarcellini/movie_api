@@ -23,8 +23,16 @@ const Users = Models.User;
 const Directors = Models.Director;
 const Genres = Models.Genre; 
 
+console.log(process.env.CONNECTION_URI)
 // mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
-mongoose.connect( process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect( process.env.CONNECTION_URI).then(() => {
+  console.log('Successfully connected to MongoDB Atlas!');
+})
+.catch((error) => {
+  console.log('Unable to connect to MongoDB Atlas!');
+  console.error(error);
+});
+;
 
 
 let auth = require('./auth')(app);
@@ -253,14 +261,6 @@ app.post('/users',
       res.status(500).send('Error: ' + error);
     });
 });
-
-app.get('/allUsers',(req,res)=>{
-
-  Users.find().then(users =>{
-    res.send(users)
-  })
-
-})
 
 // listen for requests
 const port = process.env.PORT || 8080;
