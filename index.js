@@ -10,7 +10,7 @@ app.use(morgan('common'));
 const cors = require('cors');
 app.use(cors());
 
-
+//
 const { check, validationResult } = require('express-validator');
 
 
@@ -253,6 +253,14 @@ app.post('/users',
       res.status(500).send('Error: ' + error);
     });
 });
+
+app.get('/allUsers',(req,res)=>{
+
+  Users.find().then(users =>{
+    res.send(users)
+  })
+
+})
 
 // listen for requests
 const port = process.env.PORT || 8080;
