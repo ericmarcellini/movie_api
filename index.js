@@ -119,7 +119,7 @@ app.delete('/users/:Username', passport.authenticate('jwt', { session: false }),
 
 
 // List of all available movies
-app.get('/movies', passport.authenticate('jwt', { session: false }), (req, res) => {
+app.get('/movies', /* passport.authenticate('jwt', { session: false }), */ (req, res) => {
   Movies.find()
     .then((movies) => {
       res.status(201).json(movies);
@@ -187,6 +187,7 @@ app.get('/directors', passport.authenticate('jwt', { session: false }), (req, re
     });
 });
 
+// Gets directors by name
 app.get('/directors/:Name', passport.authenticate('jwt', { session: false }), (req, res) => {
   Directors.findOne({ Name: req.params.Name })
     .then((director) => {
@@ -211,6 +212,8 @@ app.get('/directors/:Name', passport.authenticate('jwt', { session: false }), (r
     });
 });
 
+
+// Gets genre by name
 app.get('/genres/:Name', passport.authenticate('jwt', { session: false }), (req, res) => {
   Genres.findOne({ Name: req.params.Name })
     .then((genre) => {
@@ -222,6 +225,7 @@ app.get('/genres/:Name', passport.authenticate('jwt', { session: false }), (req,
     });
 }); 
 
+// Log-in is in /auth.js
 
 // post sign-up 
 app.post('/users', 
