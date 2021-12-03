@@ -44,7 +44,12 @@ require('./passport');
 app.use(express.static('public'));
 
 
-// Welcome screen
+/**
+ * Welcome screen
+ * @method GET
+ * @param {string} endpoint loads welcome screen
+ * @returns {object} - opens welcome screen
+ */
 app.get('/', (req, res) => {
   res.send('Welcome to my movie app!');
 });
@@ -147,7 +152,14 @@ app.post('/users',
     });
 });
 
-// Deletes a user by username
+
+//
+/**
+ * Deletes a user by username
+ * @method Delete
+ * @param {string} endpoint delete user by username
+ * @param {string} Username deletes specific user
+ */
 app.delete('/users/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
   Users.findOneAndRemove({ Username: req.params.Username })
     .then((user) => {
@@ -164,7 +176,12 @@ app.delete('/users/:Username', passport.authenticate('jwt', { session: false }),
 });
 /////////////////
 
-// List of all available movies
+/**
+ * List of all available movies
+ * @method GET
+ * @param {string} endpoint - to fetch all movies
+ * @returns {object} - returns movies array
+ */
 app.get('/movies', passport.authenticate('jwt', { session: false }),  (req, res) => {
   Movies.find()
     .then((movies) => {
@@ -176,7 +193,15 @@ app.get('/movies', passport.authenticate('jwt', { session: false }),  (req, res)
     });
 });
 
-// Gets the data about a movie, by name
+
+ 
+/**
+ * Gets the data about a movie, by name
+ * @method GET
+ * @param {string} endpoint - finds movies by title
+ * @param {string} title - title of the movie we want to find
+ * @returns {object} - returns specific movie
+ */
 app.get('/movies/:Title', passport.authenticate('jwt', { session: false }), (req, res) => {
   Movies.findOne({ Title: req.params.Title })
     .then((movie) => {
@@ -189,7 +214,13 @@ app.get('/movies/:Title', passport.authenticate('jwt', { session: false }), (req
 });
 
 
-// POST Request, adds movie to users list
+
+/**
+ * POST Request, adds movie to users list
+ * @method POST
+ * @param {string} endpoint - adds movie to users favmovies
+ * @param {string} Title - movie you're adding to favmovies
+ */
 app.post('/users/:Username/Movies/:MovieID', passport.authenticate('jwt', { session: false }), (req, res) => {
   Users.findOneAndUpdate({ Username: req.params.Username }, {
      $addToSet: { FavoriteMovies: req.params.MovieID }
@@ -205,7 +236,14 @@ app.post('/users/:Username/Movies/:MovieID', passport.authenticate('jwt', { sess
   });
 });
 
-// Delete Request, removes movie from users list
+// 
+/**
+ * Delete Request, removes movie from users list
+ * @method Delete
+ * @param {string} endpoint - removes movie from favmovies
+ * @param {string} MovieID - required to remove specific movie from favMovies
+ * @return {string} - success
+ */
 app.delete('/users/:Username/Movies/:MovieID', passport.authenticate('jwt', { session: false }), (req, res) => {
   Users.findOneAndUpdate({ Username: req.params.Username }, {
      $pull: { FavoriteMovies: req.params.MovieID }
@@ -221,7 +259,12 @@ app.delete('/users/:Username/Movies/:MovieID', passport.authenticate('jwt', { se
   });
 });
 
-// Gets director data
+
+/**
+ * Gets director data
+ * @param {string} endpoint - fetches all directors
+ * @return {object} - returns director list object
+ */
 app.get('/directors', passport.authenticate('jwt', { session: false }), (req, res) => {
   Directors.find()
     .then((directors) => {
@@ -233,7 +276,13 @@ app.get('/directors', passport.authenticate('jwt', { session: false }), (req, re
     });
 });
 
-// Gets directors by name
+/**
+ * Get director by name
+ * @method GET
+ * @param {string} endpoint - endpoint - fetch director by name
+ * @param {string} Name - is used to get specific director "url/directors/:Name"
+ * @returns {object} - returns a specific director
+ */
 app.get('/directors/:Name', passport.authenticate('jwt', { session: false }), (req, res) => {
   Directors.findOne({ Name: req.params.Name })
     .then((director) => {
@@ -246,7 +295,13 @@ app.get('/directors/:Name', passport.authenticate('jwt', { session: false }), (r
 });
 
 
-//Gets genre data 
+//
+/**
+ * Gets genre data 
+ * @method GET
+ * @param {string} endpoint - endpoint to show all genres
+ * @returns {object} returns all genres
+ */
  app.get('/genres', passport.authenticate('jwt', { session: false }), (req, res) => {
   Genres.find()
     .then((genre) => {
@@ -259,7 +314,14 @@ app.get('/directors/:Name', passport.authenticate('jwt', { session: false }), (r
 });
 
 
-// Gets genre by name
+
+/**
+ * Gets genre by name
+ * @method GET
+ * @param {string} endpoint - endpoint to fetch genres
+ * @param {string} Name - of specific genre
+ * @returns {object} - returns specific genre
+ */
 app.get('/genres/:Name', passport.authenticate('jwt', { session: false }), (req, res) => {
   Genres.findOne({ Name: req.params.Name })
     .then((genre) => {
