@@ -1,0 +1,27 @@
+# Movie API
+
+Movie API is a database API built with JavaScript for the MyFlix web application. This API allows users to perform CRUD operations on a movie database, including retrieving information about movies, adding new movies, updating existing movie details, and deleting movies. The API is designed to support the Movie-Flix web application, which provides a platform for users to browse and manage their favorite movies.
+
+## Features
+
+- Retrieve a list of all movies.
+- Get detailed information about a specific movie by its ID.
+- Add a new movie to the database.
+- Update the details of an existing movie.
+- Delete a movie from the database.
+
+## Technologies Used
+
+- JavaScript (Node.js/Express)
+- MongoDB (for database)
+- Mongoose (for MongoDB object modeling)
+
+## Getting Started
+
+### Prerequisites
+
+Ensure you have the following installed on your machine:
+
+- Node.js
+- npm (Node Package Manager)
+- MongoDB
