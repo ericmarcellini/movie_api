@@ -1,60 +1,66 @@
+// Import necessary modules
 const express = require('express'),
-morgan = require('morgan');
-bodyParser = require('body-parser'),
-uuid = require('uuid');
+    morgan = require('morgan'),
+    bodyParser = require('body-parser'),
+    uuid = require('uuid');
 
 const app = express();
-app.use(bodyParser.json());
-app.use(morgan('common'));
 
+// Middleware setup
+app.use(bodyParser.json()); // Parses incoming JSON requests
+app.use(morgan('common')); // Logs requests to the console
+
+// Enable CORS for all routes
 const cors = require('cors');
 app.use(cors());
 
-//
+// Import express-validator for request validation
 const { check, validationResult } = require('express-validator');
 
-
+// Import mongoose and models
 const mongoose = require('mongoose');
 const Models = require('./models.js');
 
 const Movies = Models.Movie;
 const Users = Models.User;
-
 const Directors = Models.Director;
 const Genres = Models.Genre; 
 
-console.log(process.env.CONNECTION_URI)
-// mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
-mongoose.connect( process.env.CONNECTION_URI).then(() => {
-  console.log('Successfully connected to MongoDB Atlas!');
-})
-.catch((error) => {
-  console.log('Unable to connect to MongoDB Atlas!');
-  console.error(error);
-});
-;
+// Connect to MongoDB
+console.log(process.env.CONNECTION_URI);
+mongoose.connect(process.env.CONNECTION_URI)
+  .then(() => {
+    console.log('Successfully connected to MongoDB Atlas!');
+  })
+  .catch((error) => {
+    console.log('Unable to connect to MongoDB Atlas!');
+    console.error(error);
+  });
 
-
+// Import and configure authentication
 let auth = require('./auth')(app);
-
 const passport = require('passport');
 require('./passport');
 
-// GET requests
+// Serve static files from the 'public' directory
 app.use(express.static('public'));
-
 
 /**
  * Welcome screen
  * @method GET
- * @param {string} endpoint loads welcome screen
+ * @param {string} endpoint - loads welcome screen
  * @returns {object} - opens welcome screen
  */
 app.get('/', (req, res) => {
   res.send('Welcome to my movie app!');
 });
 
-// List of all available users
+/**
+ * List of all available users
+ * @method GET
+ * @param {string} endpoint - /users
+ * @returns {object} - JSON object of all users
+ */
 app.get('/users', passport.authenticate('jwt', { session: false }), (req, res) => {
   Users.find()
     .then((users) => {
@@ -66,8 +72,12 @@ app.get('/users', passport.authenticate('jwt', { session: false }), (req, res) =
     });
 });
 
-
-// Gets the data about a single user, by name
+/**
+ * Get data about a single user by username
+ * @method GET
+ * @param {string} endpoint - /users/:Username
+ * @returns {object} - JSON object of the user
+ */
 app.get('/users/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
   Users.findOne({ Username: req.params.Username })
     .then((user) => {
@@ -79,8 +89,13 @@ app.get('/users/:Username', passport.authenticate('jwt', { session: false }), (r
     });
 });
 
-
-// Updates users data
+/**
+ * Update user data
+ * @method PUT
+ * @param {string} endpoint - /users/:Username
+ * @param {array} validation checks - validation for user inputs
+ * @returns {object} - JSON object of updated user
+ */
 app.put('/users/:Username', passport.authenticate('jwt', { session: false }), [
   check('Username', 'Username is required').isLength({min: 5}),
   check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
@@ -104,7 +119,7 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false }), [
   },
   { new: true }, 
   (err, updatedUser) => {
-    if(err) {
+    if (err) {
       console.error(err);
       res.status(500).send('Error: ' + err);
     } else {
@@ -113,7 +128,13 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false }), [
   });
 });
 
-// post sign-up 
+/**
+ * Register a new user
+ * @method POST
+ * @param {string} endpoint - /users
+ * @param {array} validation checks - validation for user inputs
+ * @returns {object} - JSON object of newly created user
+ */
 app.post('/users', 
 [
   check('Username', 'Username is required').isLength({min: 5}),
@@ -131,7 +152,7 @@ app.post('/users',
   Users.findOne({ Username: req.body.Username })
     .then((user) => {
       if (user) {
-        return res.status(400).send(req.body.Username + 'already exists');
+        return res.status(400).send(req.body.Username + ' already exists');
       } else {
         Users.create({
             Username: req.body.Username,
@@ -139,11 +160,11 @@ app.post('/users',
             Email: req.body.Email,
             Birthday: req.body.Birthday
           })
-          .then((user) =>{res.status(201).json(user) })
-        .catch((error) => {
-          console.error(error);
-          res.status(500).send('Error: ' + error);
-        })
+          .then((user) =>{ res.status(201).json(user) })
+          .catch((error) => {
+            console.error(error);
+            res.status(500).send('Error: ' + error);
+          });
       }
     })
     .catch((error) => {
@@ -152,13 +173,11 @@ app.post('/users',
     });
 });
 
-
-//
 /**
- * Deletes a user by username
- * @method Delete
- * @param {string} endpoint delete user by username
- * @param {string} Username deletes specific user
+ * Delete a user by username
+ * @method DELETE
+ * @param {string} endpoint - /users/:Username
+ * @returns {string} - success message
  */
 app.delete('/users/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
   Users.findOneAndRemove({ Username: req.params.Username })
@@ -174,13 +193,12 @@ app.delete('/users/:Username', passport.authenticate('jwt', { session: false }),
       res.status(500).send('Error: ' + err);
     });
 });
-/////////////////
 
 /**
  * List of all available movies
  * @method GET
- * @param {string} endpoint - to fetch all movies
- * @returns {object} - returns movies array
+ * @param {string} endpoint - /movies
+ * @returns {object} - JSON object of all movies
  */
 app.get('/movies', passport.authenticate('jwt', { session: false }),  (req, res) => {
   Movies.find()
@@ -193,14 +211,11 @@ app.get('/movies', passport.authenticate('jwt', { session: false }),  (req, res)
     });
 });
 
-
- 
 /**
- * Gets the data about a movie, by name
+ * Get data about a movie by title
  * @method GET
- * @param {string} endpoint - finds movies by title
- * @param {string} title - title of the movie we want to find
- * @returns {object} - returns specific movie
+ * @param {string} endpoint - /movies/:Title
+ * @returns {object} - JSON object of the movie
  */
 app.get('/movies/:Title', passport.authenticate('jwt', { session: false }), (req, res) => {
   Movies.findOne({ Title: req.params.Title })
@@ -213,13 +228,11 @@ app.get('/movies/:Title', passport.authenticate('jwt', { session: false }), (req
     });
 });
 
-
-
 /**
- * POST Request, adds movie to users list
+ * Add a movie to a user's list of favorite movies
  * @method POST
- * @param {string} endpoint - adds movie to users favmovies
- * @param {string} Title - movie you're adding to favmovies
+ * @param {string} endpoint - /users/:Username/Movies/:MovieID
+ * @returns {object} - JSON object of the updated user
  */
 app.post('/users/:Username/Movies/:MovieID', passport.authenticate('jwt', { session: false }), (req, res) => {
   Users.findOneAndUpdate({ Username: req.params.Username }, {
@@ -236,13 +249,11 @@ app.post('/users/:Username/Movies/:MovieID', passport.authenticate('jwt', { sess
   });
 });
 
-// 
 /**
- * Delete Request, removes movie from users list
- * @method Delete
- * @param {string} endpoint - removes movie from favmovies
- * @param {string} MovieID - required to remove specific movie from favMovies
- * @return {string} - success
+ * Remove a movie from a user's list of favorite movies
+ * @method DELETE
+ * @param {string} endpoint - /users/:Username/Movies/:MovieID
+ * @returns {object} - JSON object of the updated user
  */
 app.delete('/users/:Username/Movies/:MovieID', passport.authenticate('jwt', { session: false }), (req, res) => {
   Users.findOneAndUpdate({ Username: req.params.Username }, {
@@ -259,11 +270,11 @@ app.delete('/users/:Username/Movies/:MovieID', passport.authenticate('jwt', { se
   });
 });
 
-
 /**
- * Gets director data
- * @param {string} endpoint - fetches all directors
- * @return {object} - returns director list object
+ * Get list of all directors
+ * @method GET
+ * @param {string} endpoint - /directors
+ * @returns {object} - JSON object of all directors
  */
 app.get('/directors', passport.authenticate('jwt', { session: false }), (req, res) => {
   Directors.find()
@@ -277,11 +288,10 @@ app.get('/directors', passport.authenticate('jwt', { session: false }), (req, re
 });
 
 /**
- * Get director by name
+ * Get data about a director by name
  * @method GET
- * @param {string} endpoint - endpoint - fetch director by name
- * @param {string} Name - is used to get specific director "url/directors/:Name"
- * @returns {object} - returns a specific director
+ * @param {string} endpoint - /directors/:Name
+ * @returns {object} - JSON object of the director
  */
 app.get('/directors/:Name', passport.authenticate('jwt', { session: false }), (req, res) => {
   Directors.findOne({ Name: req.params.Name })
@@ -294,15 +304,13 @@ app.get('/directors/:Name', passport.authenticate('jwt', { session: false }), (r
     });
 });
 
-
-//
 /**
- * Gets genre data 
+ * Get list of all genres
  * @method GET
- * @param {string} endpoint - endpoint to show all genres
- * @returns {object} returns all genres
+ * @param {string} endpoint - /genres
+ * @returns {object} - JSON object of all genres
  */
- app.get('/genres', passport.authenticate('jwt', { session: false }), (req, res) => {
+app.get('/genres', passport.authenticate('jwt', { session: false }), (req, res) => {
   Genres.find()
     .then((genre) => {
       res.status(201).json(genre);
@@ -313,14 +321,11 @@ app.get('/directors/:Name', passport.authenticate('jwt', { session: false }), (r
     });
 });
 
-
-
 /**
- * Gets genre by name
+ * Get data about a genre by name
  * @method GET
- * @param {string} endpoint - endpoint to fetch genres
- * @param {string} Name - of specific genre
- * @returns {object} - returns specific genre
+ * @param {string} endpoint - /genres/:Name
+ * @returns {object} - JSON object of the genre
  */
 app.get('/genres/:Name', passport.authenticate('jwt', { session: false }), (req, res) => {
   Genres.findOne({ Name: req.params.Name })
@@ -331,20 +336,16 @@ app.get('/genres/:Name', passport.authenticate('jwt', { session: false }), (req,
       console.error(err);
       res.status(500).send('Error: ' + err);
     });
-}); 
+});
 
-// Log-in is in /auth.js
-
-
-
-// listen for requests
+// Listen for requests
 const port = process.env.PORT || 8080;
 app.listen(port, '0.0.0.0',() => {
  console.log('Listening on Port ' + port);
 });
 
-//Error handling
+// Error handling middleware
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send('ERROR!');
-  });
+});
